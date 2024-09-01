@@ -22,6 +22,14 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+;;
+;; Create TOC in org or markdown buffers.  The TOC is created between
+;; two specific headers, nothing else than TOC should be in this area.
+;; NOTE: in org buffers the first org header serves as end header for
+;; the TOC, so be sure to not have text between these two, it will be
+;; erased when creating or updating TOC.
+
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
