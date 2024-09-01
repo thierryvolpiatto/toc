@@ -27,6 +27,8 @@
 (eval-when-compile (require 'cl-lib))
 (require 'imenu)
 
+(defvar org-imenu-depth)
+
 (defvar toc-header-org-start-regexp "^\\*.*:TOC:$")
 (defvar toc-header-org-end-regexp   "^\\*")
 (defvar toc-header-md-start-regexp  "^<!-- markdown-toc start -")
@@ -74,11 +76,12 @@
 ;;;###autoload
 (defun toc-toc ()
   (interactive)
-  (let ((alist (funcall imenu-create-index-function))
-        (headers (toc--headers-regexp))
-        (markdownp (eq major-mode 'markdown-mode))
-        (initspaces 0)
-        beg end)
+  (let* ((org-imenu-depth 6)
+         (alist (funcall imenu-create-index-function))
+         (headers (toc--headers-regexp))
+         (markdownp (eq major-mode 'markdown-mode))
+         (initspaces 0)
+         beg end)
     (save-excursion
       (goto-char (point-min))
       (when (re-search-forward (car headers))
