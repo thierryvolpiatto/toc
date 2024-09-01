@@ -44,6 +44,7 @@
 (defvar toc-unwanted-chars-regexp   "[^[:alnum:]_-]")
 
 (defun toc--headers-regexp ()
+  "Choose the TOC header regexps according to mode."
   (cond ((eq major-mode 'markdown-mode)
          (list toc-header-md-start-regexp
                toc-header-md-end-regexp))
@@ -52,11 +53,13 @@
                toc-header-org-end-regexp))))
 
 (defun toc--insert-elm (spcs key url)
+  "Insert TOC element according to mode."
   (if (eq major-mode 'markdown-mode)
       (insert (format "%s- [%s](#%s)\n" spcs key url))
     (insert (format "%s- [[#%s][%s]]\n" spcs url key))))
 
 (cl-defun toc-insert-toc (alist &optional (spaces 0))
+  "Insert TOC elements and indent them as needed."
   (cl-loop with indent = (if (eq major-mode 'markdown-mode) 4 2)
            for (key . pos) in alist
            for spcs =  (make-string spaces ? )
@@ -75,6 +78,7 @@
 
 ;;;###autoload
 (defun toc-toc-insert-headers-at-point ()
+  "Insert TOC headers at point."
   (interactive)
   (if (eq major-mode 'org-mode)
       (insert "* Table of Contents :TOC:\n")
@@ -83,6 +87,7 @@
 
 ;;;###autoload
 (defun toc-toc ()
+  "Create TOC in org or markdown buffers."
   (interactive)
   (let* ((org-imenu-depth 6)
          (alist (funcall imenu-create-index-function))
