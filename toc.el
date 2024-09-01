@@ -27,7 +27,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'imenu)
 
-(defvar toc-header-org-start-regexp "^\\* Table of Contents :TOC:$")
+(defvar toc-header-org-start-regexp "^\\*.*:TOC:$")
 (defvar toc-header-org-end-regexp   "^\\*")
 (defvar toc-header-md-start-regexp  "^<!-- markdown-toc start -")
 (defvar toc-header-md-end-regexp    "^<!-- markdown-toc end -->")
@@ -77,6 +77,7 @@
   (let ((alist (funcall imenu-create-index-function))
         (headers (toc--headers-regexp))
         (markdownp (eq major-mode 'markdown-mode))
+        (initspaces 0)
         beg end)
     (save-excursion
       (goto-char (point-min))
@@ -89,7 +90,12 @@
       (goto-char beg)
       (when markdownp
         (insert "**Table of Contents**\n\n"))
-      (toc-insert-toc (if markdownp alist (cdr alist))))))
+      (toc-insert-toc (cond (markdownp alist)
+                            ((null (cdr alist))
+                             (setq initspaces 2)
+                             (cdar alist))
+                            (t (cdr alist)))
+                      initspaces))))
 
 (provide 'toc)
 
