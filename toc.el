@@ -54,9 +54,10 @@
 
 (defun toc--insert-elm (spcs key url)
   "Insert TOC element according to mode."
-  (if (eq major-mode 'markdown-mode)
-      (insert (format "%s- [%s](#%s)\n" spcs key url))
-    (insert (format "%s- [[#%s][%s]]\n" spcs url key))))
+  (if (eq major-mode 'org-mode)
+      (insert (format "%s- [[#%s][%s]]\n" spcs url key))
+    (unless (string= key ".") ; md 1st elm is ("." . pos) in subalists.
+      (insert (format "%s- [%s](#%s)\n" spcs key url)))))
 
 (cl-defun toc-insert-toc (alist &optional (spaces 0))
   "Insert TOC elements and indent them as needed."
@@ -67,14 +68,12 @@
                       (lambda (x)
                         (downcase (replace-regexp-in-string
                                    toc-unwanted-chars-regexp "" x)))
-                      (split-string key) "-") 
-           if (and (number-or-marker-p pos) (not (string= key ".")))
+                      (split-string key) "-")
            do (toc--insert-elm spcs key url)
-           else do
-           (toc--insert-elm spcs key url)
-           (toc-insert-toc (if (eq major-mode 'markdown-mode)
-                               (cdr pos) pos)
-                           (+ spaces indent))))
+           when (imenu--subalist-p (cons key pos))
+           do (toc-insert-toc (if (eq major-mode 'markdown-mode)
+                                  (cdr pos) pos)
+                              (+ spaces indent))))
 
 ;;;###autoload
 (defun toc-insert-headers-at-point ()
