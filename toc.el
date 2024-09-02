@@ -77,7 +77,7 @@
                            (+ spaces indent))))
 
 ;;;###autoload
-(defun toc-toc-insert-headers-at-point ()
+(defun toc-insert-headers-at-point ()
   "Insert TOC headers at point."
   (interactive)
   (if (eq major-mode 'org-mode)
