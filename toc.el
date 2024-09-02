@@ -59,7 +59,7 @@
     (unless (string= key ".") ; md 1st elm is ("." . pos) in subalists.
       (insert (format "%s- [%s](#%s)\n" spcs key url)))))
 
-(cl-defun toc-insert-toc (alist &optional (spaces 0))
+(defun toc-insert-toc (alist spaces)
   "Insert TOC elements and indent them as needed."
   (cl-loop with indent = (if (eq major-mode 'markdown-mode) 4 2)
            for (key . pos) in alist
