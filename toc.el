@@ -1,7 +1,7 @@
 ;;; toc.el --- Create TOC for org or markdown -*- lexical-binding: t -*-
 
 ;; Author: Thierry Volpiatto <thievol@posteo.net>
-;; Copyright (C) 2024 Thierry Volpiatto, all rights reserved.
+;; Copyright (C) 2024 ~ 2026 Thierry Volpiatto, all rights reserved.
 ;; URL: https://github.com/thierryvolpiatto/toc
 
 ;; Compatibility: GNU Emacs 24.4+"
